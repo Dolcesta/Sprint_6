@@ -1,51 +1,42 @@
 package com.example;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class LionTestParametrized {
-    private final String sex;
-    private final boolean hasMane;
 
-    private final int kittensCount;
+    @Parameterized.Parameter()
+    public String sex;
 
-    public LionTestParametrized(String sex, boolean hasMane, int kittensCount) {
-        this.sex = sex;
-        this.hasMane = hasMane;
-        this.kittensCount = kittensCount;
-    }
+    @Parameterized.Parameter(1)
+    public boolean doesHaveMane;
 
-    @Parameterized.Parameters
-    public static Object[][] setLionSex() {
-        return new Object[][]{
-                {"Самец", true, 1},
-                {"Самка", false, 1}
-        };
-    }
+    @Mock
+    Feline feline;
 
     @Before
-    public void initMockito() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    public void lionDoesHaveMane() throws Exception {
-        Feline feline = new Feline();
-        Lion lion = new Lion(feline, sex);
-
-        Assert.assertEquals("Используйте допустимые значения пола животного - самец или самка", hasMane, lion.doesHaveMane());
+    @Parameterized.Parameters(name = "Lion sex: {0}, expected for doesHaveMane(): {1}")
+    public static Object[][] params() {
+        return new Object[][] {
+                { "Самец", true },
+                { "Самка", false }
+        };
     }
 
     @Test
-    public void lionGetKittens() throws Exception {
-        Feline feline = new Feline();
+    public void doesHaveMane() throws Exception {
         Lion lion = new Lion(feline, sex);
-
-        Assert.assertEquals("У львов 1 львенок", kittensCount, lion.getKittens());
+        assertEquals(doesHaveMane, lion.doesHaveMane());
     }
 }

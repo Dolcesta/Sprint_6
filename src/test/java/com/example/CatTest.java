@@ -1,64 +1,37 @@
 package com.example;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.List;
-
+import static org.junit.Assert.assertEquals;
 @RunWith(MockitoJUnitRunner.class)
 public class CatTest {
-
     @Mock
     Feline feline;
-    @Mock
-    Cat cat;
 
     @Test
-    public void catGetSound() {
+    public void getSoundTest() {
         Cat cat = new Cat(feline);
-        Assert.assertEquals("Кошка должна говорить - Мяу", "Мяу", cat.getSound());
+        assertEquals("Мяу", cat.getSound());
     }
 
     @Test
-    public void catGetSoundMock() {
-        Mockito.when(cat.getSound()).thenReturn("Мяу");
-        Assert.assertEquals("Кошка должна говорить - Мяу", "Мяу", cat.getSound());
-    }
-
-    // Прверяем метод getFood класса Cat
-    @Test
-    public void getFood() throws Exception {
-        Feline feline = new Feline();
-        Cat cat = new Cat(feline);
-        List<String> expectedCatFood = List.of("Животные", "Птицы", "Рыба");
-        Assert.assertEquals("Кошки - хищники", expectedCatFood, cat.getFood());
-    }
-
-    @Test
-    public void negativeGetFood() throws Exception {
-        Feline feline = new Feline();
-        Cat cat = new Cat(feline);
-        List<String> expectedCatFood = List.of("Трава", "Различные растения");
-        Assert.assertNotEquals("Кошки - хищники", expectedCatFood, cat.getFood());
-    }
-
-    @Test
-    public void getFoodMock2() throws Exception {
-        Cat cat = new Cat(feline);
-        Mockito.when(feline.eatMeat()).thenReturn(List.of("Трава", "Различные растения"));
-        List<String> expectedCatFood = List.of("Животные", "Птицы", "Рыба");
-        Assert.assertNotEquals("Кошки - хищники", expectedCatFood, cat.getFood());
-    }
-
-    @Test
-    public void getFoodMock() throws Exception {
+    public void getFoodTest() throws Exception {
         Cat cat = new Cat(feline);
         Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
-        List<String> expectedCatFood = List.of("Животные", "Птицы", "Рыба");
-        Assert.assertEquals("Кошки - хищники", expectedCatFood, cat.getFood());
+        List<String> expectedMeal = List.of("Животные", "Птицы", "Рыба");
+        List<String> actualMeal = cat.getFood();
+        Assert.assertEquals(expectedMeal, actualMeal);
+    }
+    @Test
+    public void getFood() throws Exception {
+        Cat cat = new Cat(feline);
+        cat.getFood();
+        Mockito.verify(feline, Mockito.times(1)).eatMeat();
     }
 }
