@@ -24,14 +24,14 @@ public class AnimalTest {
         String actual = e.getMessage();
         assertEquals(expected, actual);}
     @Test
-    public void felineGetFood() throws Exception {
+    public void predatorGetFood() throws Exception {
         Animal animal = new Animal();
         Assert.assertEquals(List.of("Животные", "Птицы", "Рыба"), animal.getFood("Хищник"));
 
     }
 
     @Test
-    public void notFelineGetFood() throws Exception {
+    public void herbivoreGetFood() throws Exception {
         Animal animal = new Animal();
         Assert.assertEquals(List.of("Трава", "Различные растения"), animal.getFood("Травоядное"));
     }
